@@ -107,6 +107,9 @@ def train_simclr(epochs=500, batch_size=512, lr=0.4, momentum=0.9,
             print(f"  Epoch [{epoch+1}/{epochs}] "
                   f"Loss: {total_loss/num_batches:.4f} "
                   f"LR: {scheduler.get_last_lr()[0]:.6f}")
+           
+
+        if (epoch + 1) % 50 == 0 or epoch == 0:
             torch.save(model.state_dict(), checkpoint_path)
             print(f"  Checkpoint saved at epoch {epoch+1}")
 
