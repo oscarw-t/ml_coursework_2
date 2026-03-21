@@ -155,13 +155,13 @@ def run_experiment(
 
 if __name__ == "__main__":
     run_experiment(
-        simclr_epochs=500,
+        simclr_epochs=200,
         simclr_batch_size=512,
         budget_per_round=10,
         num_rounds=5,
         classifier_epochs=100,
-        num_seeds=10,
+        num_seeds=3,
         device='cuda',
         checkpoint_path='simclr_checkpoint.pt',
-        strategies=('typiclust', 'random', 'uncertainty', 'margin', 'entropy'),
+        strategies=('typiclust', 'random', 'uncertainty'),
     )
