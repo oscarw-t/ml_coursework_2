@@ -83,7 +83,7 @@ def run_experiment(
     classifier_epochs=100,      
     num_seeds=10,               
     device='cuda',
-    checkpoint_path='/kaggle/working/simclr_checkpoint.pt',
+    checkpoint_path='simclr_checkpoint.pt',
     strategies=('typiclust', 'random', 'uncertainty', 'margin', 'entropy'),
 ):
     device = device if torch.cuda.is_available() else 'cpu'
@@ -145,10 +145,10 @@ def run_experiment(
 
     _plot_results(sup_results, num_rounds, budget_per_round,
                   title="Fully Supervised — CIFAR-10 (low budget)",
-                  save_path="/kaggle/working/results_supervised.png")
+                  save_path="results_supervised.png")
     _plot_results(probe_results, num_rounds, budget_per_round,
                   title="Linear Probe on SimCLR features — CIFAR-10 (low budget)",
-                  save_path="/kaggle/working/results_probe.png")
+                  save_path="results_probe.png")
 
     return sup_results, probe_results
 
