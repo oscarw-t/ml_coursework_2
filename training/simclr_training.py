@@ -55,7 +55,7 @@ class NTXentLoss(nn.Module):
 
 def train_simclr(epochs=500, batch_size=512, lr=0.4, momentum=0.9,
                  weight_decay=1e-4, temperature=0.5, device='cuda',
-                 checkpoint_path='simclr_checkpoint.pt'):
+                 checkpoint_path='/kaggle/working/simclr_checkpoint.pt'):
     """Train SimCLR on all 50k CIFAR-10 images (unlabelled).
 
     If checkpoint_path exists the model is loaded and returned immediately,
