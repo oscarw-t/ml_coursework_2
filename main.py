@@ -160,8 +160,8 @@ if __name__ == "__main__":
         budget_per_round=10,
         num_rounds=5,
         classifier_epochs=100,
-        num_seeds=3,
+        num_seeds=5
         device='cuda',
         checkpoint_path='simclr_checkpoint.pt',
-        strategies=('typiclust', 'random', 'uncertainty'),
+        strategies=('typiclust', 'random', 'uncertainty', 'hybrid'),
     )
