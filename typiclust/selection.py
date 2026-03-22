@@ -71,3 +71,16 @@ def random_select_round(n_total, labeled_indices, budget):
     remaining = list(set(range(n_total)) - set(labeled_indices))
     np.random.shuffle(remaining)
     return remaining[:budget]
+
+def hybrid_select_round(features, labeled_indices, budget, round_idx,
+                        n_total=50000, device='cuda', classifier_epochs=100,
+                        switch_round=3):
+    """Phase-transition hybrid: TypiClust early, uncertainty late."""
+    if round_idx < switch_round:
+        return typiclust_select_round(features, labeled_indices, budget)
+    else:
+        from typiclust.baselines import uncertainty_select_round
+        return uncertainty_select_round(
+            labeled_indices, budget, n_total,
+            strategy='uncertainty', device=device, epochs=classifier_epochs
+        )

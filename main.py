@@ -13,15 +13,17 @@ from typiclust.baselines import uncertainty_select_round
 
 # Display labels, colours and markers for each strategy (Fig. 4/5 style)
 _LABEL  = {'typiclust': 'TPC_RP', 'random': 'Random',
-           'uncertainty': 'Uncertainty', 'margin': 'Margin', 'entropy': 'Entropy'}
+           'uncertainty': 'Uncertainty', 'margin': 'Margin',
+           'entropy': 'Entropy', 'hybrid': 'Hybrid (TC→Unc)'}
 _COLOR  = {'typiclust': 'tab:blue', 'random': 'black',
-           'uncertainty': 'tab:red', 'margin': 'tab:green', 'entropy': 'tab:purple'}
+           'uncertainty': 'tab:red', 'margin': 'tab:green',
+           'entropy': 'tab:purple', 'hybrid': 'tab:orange'}
 _MARKER = {'typiclust': 'o', 'random': 's', 'uncertainty': '^',
-           'margin': 'D', 'entropy': 'v'}
+           'margin': 'D', 'entropy': 'v', 'hybrid': 'P'}
 
 
 def _select_round(strategy, features, labels_gt, labeled_indices,
-                  budget, device, classifier_epochs):
+                  budget, device, classifier_epochs, round_idx=0):
     n_total = len(labels_gt)
     if strategy == 'typiclust':
         return typiclust_select_round(features, labeled_indices, budget)
@@ -31,6 +33,12 @@ def _select_round(strategy, features, labels_gt, labeled_indices,
         return uncertainty_select_round(
             labeled_indices, budget, n_total,
             strategy=strategy, device=device, epochs=classifier_epochs
+        )
+    elif strategy == 'hybrid':
+        from typiclust.selection import hybrid_select_round
+        return hybrid_select_round(
+            features, labeled_indices, budget, round_idx,
+            n_total=n_total, device=device, classifier_epochs=classifier_epochs
         )
     else:
         raise ValueError(f"Unknown strategy: {strategy!r}")
@@ -115,8 +123,10 @@ def run_experiment(
 
                 new_queries = _select_round(
                     strategy, train_features, train_labels,
-                    labeled_indices, budget_per_round, device, classifier_epochs
+                    labeled_indices, budget_per_round, device, classifier_epochs,
+                    round_idx=round_idx
                 )
+
                 labeled_indices = labeled_indices + new_queries
                 budget = len(labeled_indices)
 
